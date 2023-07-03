@@ -1,0 +1,284 @@
+class errorA(Scene):
+  def construct(self):
+    # coloooooooores
+
+    color1 = "#F4D160"
+    color2 = "#28527A"
+    color3 = "#32B4D8"
+    color4 = "#98BAE3"
+
+    #texto intro
+
+    texto1 = MathTex("\\text{INTRODUCCIÓN A TEORÍA DE ERRORES}")
+    texto1.set_color(color4)
+    self.play(Write(texto1))
+    self.wait(1)
+    self.play(FadeOut(texto1))
+    self.wait()
+    texto2 = MathTex("\\text{ERROR ABSOLUTO}")
+    texto2.set_color(color1)
+    self.play(Write(texto2))
+    self.wait(1)
+    self.play(FadeOut(texto2))
+    self.wait()
+
+
+    l0 = NumberLine(
+        x_range=[0, 4, 1],
+        length=4,
+        color=color4,
+        include_numbers=True,
+        label_direction=UP,
+      ).move_to(np.array([-3,0,0]))
+
+    unit_label = Tex("(m)").move_to(np.array([5.5,-0.1,0]))
+    unit_label.scale(0.6)
+
+    num4 = l0.numbers[4]
+    num4.set_color(BLACK)
+
+    number = DecimalNumber(3, num_decimal_places=2, color=WHITE)  # Número inicial (3 con dos decimales)
+    number.next_to(l0.get_tick(3), RIGHT*2+UP*0.5)
+    number.scale(0.72)
+    #self.add(number)
+    new_numbers = []
+    for _ in range(30):  # Realizar 90 cambios aleatorios durante 3 segundos (30 cambios por segundo)
+        new_decimal = round(random.uniform(0.50, 0.99), 2)  # Generar un número aleatorio entre 0 y 0.99 con 2 decimales
+        new_number = DecimalNumber(3 + new_decimal, num_decimal_places=2, color=WHITE)  # Crear un nuevo número con la parte decimal cambiada
+        new_number.next_to(l0.get_tick(3), RIGHT*2+UP*0.5)
+        new_number.scale(0.72)
+        #self.play(Transform(number, new_number))# Posicionar el nuevo número en el centro de la pantalla
+        self.wait(1 / 50)
+
+
+
+    l1 = NumberLine(
+        x_range=[0, 4, 1],
+        length=4,
+        color=color4,
+        include_numbers=True,
+        label_direction=UP,
+      ).move_to(np.array([3,0,0]))
+    unit_label1 = Tex("(m)").move_to(np.array([-0.5,-0.1,0]))
+    unit_label1.scale(0.6)
+
+    self.play(FadeIn(l0, l1, number, unit_label, unit_label1))
+    self.wait(0.3)
+
+
+    #linea de medida para medicion real
+    texto3 = MathTex("\\text{Medida real}").move_to(np.array([3,3,0]))
+    texto4 = MathTex("\\text{del objeto}").move_to(np.array([3,2,0]))
+    #linea de medida para medicion empirica
+    texto5 = MathTex("\\text{Medida empírica}").move_to(np.array([-3,3,0]))
+    texto6 = MathTex("\\text{del objeto}").move_to(np.array([-3,2,0]))
+    self.play(Write(texto3),Write(texto4), Write(texto5), Write(texto6))
+
+    #LINEAS
+
+    START = (1,0,0)
+    END =   (5,0,0)
+    line = Line(START,END);
+
+    START1 = (-5,0,0)
+    END1 =   (-1,0,0)
+    line1 = Line(START1,END1);
+
+    #IMAGEEEEEEEEEEEEEEN
+    imagen = ImageMobject("/content/manim.png")
+    #self.add(imagen)
+    lugar0= ImageMobject("/content/manim.png").move_to(np.array([-3,-1.8,0]))
+    lugar0.scale(0.6)
+
+    lugar1= ImageMobject("/content/manim.png").move_to(np.array([3,-1.8,0]))
+    lugar1.scale(0.6)
+    self.play(Create(line), Create(line1), FadeIn(lugar0, lugar1), Transform(number, new_number), run_time=2)
+    self.wait(3)
+    self.play(FadeOut(l0, l1, texto3, texto4, texto5, texto6, line, line1, lugar0, lugar1, number, new_number, unit_label, unit_label1))
+
+
+
+    #zoom valor real del objeto - ahora linea 1 es 3
+
+    texto7 = MathTex("\\text{Medida real}").move_to(np.array([0,3,0]))
+    texto8 = MathTex("\\text{del objeto}").move_to(np.array([0,2,0]))
+    definicion = MathTex("\\text{Definición: valor verdadero o teórico}").move_to(np.array([0,-1.5,0]))
+    definicion1 = MathTex("\\text{que se obtendría si no hubiera}").move_to(np.array([0,-2,0]))
+    definicion2 = MathTex("\\text{ningún error al medirlo.}").move_to(np.array([0,-2.5,0]))
+
+    l3 = NumberLine(
+        x_range=[0, 4, 1],
+        length=4,
+        color=color4,
+        include_numbers=True,
+        label_direction=UP,
+      ).move_to(np.array([0,0,0]))
+
+    unit_labelmr = Tex("(m)").move_to(np.array([2.4,-0.2,0]))
+    unit_labelmr.scale(0.6)
+
+    START2 = (-2,0,0)
+    END2 =   (2,0,0)
+    line3 = Line(START2,END2);
+
+    self.play(Write(texto7), Write (texto8), Write(definicion), Write(definicion1), Write(definicion2), FadeIn(l3), Write(unit_labelmr), Create(line3))
+    self.wait(3)
+    self.play(FadeOut(l3,texto7, texto8,line3, definicion, definicion1, definicion2, unit_labelmr))
+
+    #zoom valor medido del objeto - ahora linea 0 es 4
+
+    texto9 = MathTex("\\text{Medida empírica}").move_to(np.array([0,3,0]))
+    texto10 = MathTex("\\text{del objeto}").move_to(np.array([0,2,0]))
+    texto9.set_color(color1)
+    texto10.set_color(color1)
+
+
+    definicion3 = MathTex("\\text{Definición: es el valor(es) obtenido(s)}").move_to(np.array([0,-1.5,0]))
+    definicion4 = MathTex("\\text{experimentalmente con un instrumento}").move_to(np.array([0,-2,0]))
+    definicion5 = MathTex("\\text{de medida, que puede estar afectado}").move_to(np.array([0,-2.5,0]))
+    definicion6 = MathTex("\\text{por errores aleatorios o sistemáticos.}").move_to(np.array([0,-3,0]))
+
+    #LINEAAAAAAAA
+
+    lme = NumberLine(
+        x_range=[0, 4, 1],
+        length=4,
+        color=color4,
+        include_numbers=True,
+        label_direction=UP,
+      ).move_to(np.array([0,0,0]))
+
+    START3 = (-2,0,0)
+    END3 =   (2,0,0)
+    line4 = Line(START2,END2);
+
+    unit_labelme = Tex("(m)").move_to(np.array([2.4,-0.1,0]))
+    unit_labelme.scale(0.6)
+
+    num41 = lme.numbers[4]
+    num41.set_color(BLACK)
+
+    number1 = DecimalNumber(3, num_decimal_places=2, color=WHITE)  # Número inicial (3 con dos decimales)
+    number1.next_to(lme.get_tick(3), RIGHT*2+UP*0.5)
+    number1.scale(0.72)
+    #self.add(number)
+
+    for _ in range(30):  # Realizar 90 cambios aleatorios durante 3 segundos (30 cambios por segundo)
+        new_decimal1 = round(random.uniform(0.50, 0.99), 2)  # Generar un número aleatorio entre 0 y 0.99 con 2 decimales
+        new_number1 = DecimalNumber(3 + new_decimal, num_decimal_places=2, color=WHITE)  # Crear un nuevo número con la parte decimal cambiada
+        new_number1.next_to(lme.get_tick(3), RIGHT*2+UP*0.5)
+        new_number1.scale(0.72)
+        #self.play(Transform(number, new_number))# Posicionar el nuevo número en el centro de la pantalla
+        self.wait(1 / 50)
+
+    self.play(Write(texto9), Write (texto10), Write(definicion3), Write(definicion4), Write(definicion5), Write(definicion6), Write(num41),FadeIn(lme), Create(line4),Write(unit_labelme), Transform(number1, new_number1))
+    self.wait(4)
+    self.play(FadeOut(definicion3, definicion4, definicion5, definicion6, num41, lme, line4, number1, new_number1, unit_labelme))
+
+
+    l4 = NumberLine(
+        x_range=[0, 4, 3.88],
+        length=4,
+        color=color4,
+        include_numbers=True,
+        label_direction=UP,
+      ).move_to(np.array([0,0,0]))
+    l5 = NumberLine(
+        x_range=[0, 4, 3.90],
+        length=4,
+        color=color4,
+        include_numbers=True,
+        label_direction=UP,
+      ).move_to(np.array([0,-1,0]))
+    l6 = NumberLine(
+        x_range=[0, 4, 3.83],
+        length=4,
+        color=color4,
+        include_numbers=True,
+        label_direction=UP,
+      ).move_to(np.array([0,-2,0]))
+
+    texto11 = MathTex("\\text{Medida 1}").move_to(np.array([-4,0,0]))
+    texto11.scale(1)
+    texto12 = MathTex("\\text{Medida 2}").move_to(np.array([-4,-1,0]))
+    texto12.scale(1)
+    texto13 = MathTex("\\text{Medida 3}").move_to(np.array([-4,-2,0]))
+    texto13.scale(1)
+    texto14 = MathTex("=", "3.88", "m").move_to(np.array([3.6,0,0]))
+    texto14.scale(1)
+    texto15 = MathTex("=", "3.9", "m").move_to(np.array([3.6,-1,0]))
+    texto15.scale(1)
+    texto16 = MathTex("=", "3.83", "m").move_to(np.array([3.6,-2,0]))
+    texto16.scale(1)
+    self.play(Write(l4), Write (l5),Write ( l6), Write (texto13),Write ( texto11), Write (texto12),Write (texto14),Write (texto15),Write (texto16))
+
+    #espacio para desaparecer rectas y medidas
+    self.wait(3)
+    self.play(FadeOut(l4,texto9, texto10, l5, l6, texto11, texto12, texto13,texto14[0],texto15[0],texto16[0]))
+
+    titulo = MathTex("\\text{Operaciones:}").move_to(UP*2.5+LEFT*3.5)
+    titulo.scale(2)
+    titulo.set_color(BLUE)
+    self.play(Write(titulo))
+
+
+    # nota, para usar transformacion se debe usar MathTex y no Text.
+
+    texto17 = MathTex("(","3.88 m","+","3.9 m","+","3.83 m",")","-","\\text{medida real del objeto}").move_to(UP)
+    texto17[8].set_color(color4)
+    self.play(Write(texto17[0]), Write(texto17[2]), Write(texto17[4]), Write(texto17[6]), Write(texto17[7]), Write(texto17[8]))
+
+    #aqui uso transform
+    self.play(Transform(texto14[1],texto17[1]), Transform(texto15[1],texto17[3]), Transform(texto16[1],texto17[5]), FadeOut(texto14[2],texto15[2],texto16[2]))
+
+    texto18 = MathTex("(","11.61 m","\\div","3)","-","\\text{medida real del objeto}")
+    texto18[5].set_color(color4)
+
+    self.play(Write(texto18[0]), Write(texto18[2]), Write(texto18[3]), Write(texto18[4]), Write(texto18[5]))
+    self.play(Transform(texto17[1], texto18[1]), Transform(texto17[3],texto18[1]), Transform(texto17[5], texto18[1]))#aqui hice lo de escribir
+    #corchete
+    p1 = [-4,0,0]
+    p2 = [-1.5,0,0]
+    brace = BraceBetweenPoints(p1,p2)
+    brace_text = brace.get_text("Media de medidas")
+    brace_text.scale(0.8)
+
+    self.play(Create(brace), FadeIn(brace_text))
+    self.wait(3)
+
+    self.play(FadeOut(brace, brace_text), run_time=2)
+
+    texto19 = MathTex("(","3.87m",")","-","4 m").next_to(texto18,DOWN*1.2)
+    texto19[4].set_color(PINK)
+    self.play(Write(texto19))
+    self.wait(3)
+    texto20 = MathTex("-0.13m").next_to(texto19, DOWN*1.2)
+    texto21 = MathTex("\lvert", "-0.13", "\lvert","m").next_to(texto20, DOWN*1.2)
+    texto21[0].set_color(PINK)
+    texto21[2].set_color(PINK)
+    texto22 = MathTex("0.13 m").next_to(texto21, DOWN*1.2)
+    self.play(FadeIn(texto20, texto21, texto22), run_time=3)
+    #corchete 2
+    p1 = [1,-2.5,0]
+    p2 = [1,-2,0]
+    brace1 = BraceBetweenPoints(p1,p2)
+    brace1_text = brace1.get_text("Valor absoluto").move_to(np.array([2.8,-2.25,0]))
+    brace1_text.set_color(PINK)
+    brace1_text.scale(0.8)
+
+    self.play(Create(brace1), FadeIn(brace1_text))
+    self.wait(5)
+
+    #FADEOUT pa todo menos el resultado
+
+    self.play(FadeOut(texto19, texto20, texto21, texto17, texto18[1], texto18, texto14[1], texto15[1], texto16[1], brace1, brace1_text, titulo), run_time=2)
+
+    #Presentacion del resultado
+
+    resultado = MathTex("\\text{Error absoluto:}").move_to(UP)
+    paren = MathTex("\mathbf{E}_{A} =","(","0.13",")","m")
+    self.play(Write(resultado),Write(paren[0]),Write(paren[1]), Write(paren[3]), Write(paren[4]),run_time=1)
+    self.play(Transform(texto22,paren[2]))
+    texto22.set_color(PINK)
+
+    self.wait(5)
